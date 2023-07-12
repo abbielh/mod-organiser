@@ -1,10 +1,8 @@
 import os
-import shutil
-import glob
 
 #Make list
 #misc will always be the last element in the list
-types = ["hair", "tops", "bottoms", "dresses", "shoes", "makeup", "misc"]
+types = ["hair", "top", "jeans", "shorts", "hoodie", "jacket", "dress", "shoes", "makeup", "misc"]
 
 #Select dir
 input_dir = input("Select directory: ")
@@ -17,19 +15,26 @@ for i in types:
     else:
         os.mkdir(i)
 
-def sortDir(list):
-    for i in list:
-        stringElem = str(i)
-        category = "\*" + stringElem + "*"
-        pattern = input_dir + category
-    return pattern
-
 #Place files in folders
 count = 0
-fileType = sortDir(types)
-for num in types:
-    for file in glob.glob(fileType, recursive = False):
-        shutil.move(os.path.join(input_dir, file), types[num])
-        count += 1
+subdir = os.listdir()
+filePath = []
+for i in subdir:
+    if os.path.splitext(i)[1] == ".package":
+        filePath.append(i)
+
+for folder in types:
+    for file in filePath:
+        if file == folder:
+            os.rename(input_dir, "\\" + types[folder])
+            count += 1
+            file.close()
+        elif file != folder:
+            os.rename(input_dir, "\\" + types[-1])
+            count += 1
+            file.close()
+        else:
+            print("file not moved!")
+
 print("Moved ", count, "files")
 
